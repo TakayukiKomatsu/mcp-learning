@@ -1,0 +1,19 @@
+{
+  "name": "mcp-lowlevel-notes",
+  "version": "1.0.0",
+  "description": "MCP notes server using the low-level Server API — for learning",
+  "type": "module",
+  "scripts": {
+    "server": "tsx src/server.ts",
+    "client": "tsx src/client.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "@types/node": "^22.0.0"
+  }
+}

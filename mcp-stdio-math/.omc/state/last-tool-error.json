@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd /Users/takayuki/dev/SIDEPROJECTS/mcp-learning/mcp-inmemory-demo && rtk tsc --noEmit 2>&1 && rtk npm run start 2>&1\",\"description\":\"Type-check and run inmemory demo\"}",
+  "error": "Exit code 2\nTypeScript: 8 errors in 1 files\n═══════════════════════════════════════\nsrc/main.ts (8 errors)\n  L191: TS2345 Argument of type '{ [x: string]: unknown; content: ({ type: \"text\"; text: string; annotations?: { audience?: (\"user\" ...\n    Type '{ [x: string]: unknown; toolResult: unknown; _meta?: { [x: string]: unknown; progressToken?: string | number | ...\n  L194: TS2345 Argument of type '{ [x: string]: unknown; content: ({ type: \"text\"; text: string; annotations?: { audience?: (\"user\" ...",
+  "timestamp": "2026-04-14T15:17:41.337Z",
+  "retry_count": 1
+}

@@ -1,0 +1,24 @@
+{
+  "manifest_version": "0.3",
+  "name": "mcp-bundle-demo",
+  "display_name": "MCP Bundle Demo",
+  "version": "1.0.0",
+  "description": "A tiny local MCP bundle used to demonstrate the MCPB manifest structure.",
+  "author": {
+    "name": "Takayuki Learning Repo"
+  },
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.js"]
+    }
+  },
+  "tools": [
+    {
+      "name": "bundle_hello",
+      "description": "Simple tool exposed by the bundled server."
+    }
+  ]
+}

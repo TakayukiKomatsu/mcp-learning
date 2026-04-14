@@ -1,0 +1,18 @@
+{
+  "name": "mcp-inmemory-demo",
+  "version": "1.0.0",
+  "description": "MCP demo using InMemoryTransport — client and server in the same process",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/main.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "@types/node": "^22.0.0"
+  }
+}
