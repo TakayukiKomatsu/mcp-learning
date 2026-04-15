@@ -39,6 +39,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import {
   ListToolsRequestSchema,
   CallToolRequestSchema,
+  RootsListChangedNotificationSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 
 // ─── Tool Definitions ─────────────────────────────────────────────────────────
@@ -89,6 +90,11 @@ const server = new Server(
     },
   },
 );
+
+server.setNotificationHandler(RootsListChangedNotificationSchema, async () => {
+  console.error('[server] notifications/roots/list_changed received');
+  console.error('[server]   Client says its workspace roots changed; refresh any cached root state now.');
+});
 
 // ─── Handler: tools/list ──────────────────────────────────────────────────────
 

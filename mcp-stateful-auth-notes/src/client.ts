@@ -62,7 +62,6 @@ async function main() {
 
   console.log('\nTerminating session...');
   await transport.terminateSession();
-  await client.close();
 }
 
 main().catch((error) => {

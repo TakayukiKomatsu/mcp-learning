@@ -49,6 +49,25 @@ import {
   InitializedNotificationSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 
+const runningOperations = new Map<string | number, AbortController>();
+
+function sleepWithAbort(duration: number, signal: AbortSignal): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    const timer = setTimeout(() => {
+      signal.removeEventListener('abort', onAbort);
+      resolve();
+    }, duration);
+
+    const onAbort = () => {
+      clearTimeout(timer);
+      signal.removeEventListener('abort', onAbort);
+      reject(new Error('Operation aborted by cancellation notification'));
+    };
+
+    signal.addEventListener('abort', onAbort);
+  });
+}
+
 // ─── Tool Definitions ─────────────────────────────────────────────────────────
 
 const TOOLS = [
@@ -133,24 +152,36 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 // target for cancellation: the client can abort the call mid-sleep and the
 // transport will drop the response even if the server finishes the sleep.
 //
-// Note on cancellation: the server receives the cancellation as a separate
-// notification (see Phase 5 handler below). True cooperative cancellation
-// would require passing an AbortSignal into this handler; for this demo the
-// sleep simply completes or the response is ignored by the client.
+// This demo now does true cooperative cancellation: we store an AbortController
+// per in-flight request ID, and the notifications/cancelled handler aborts the
+// matching controller immediately.
 
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
+server.setRequestHandler(CallToolRequestSchema, async (request, extra) => {
   const { name, arguments: args = {} } = request.params;
   const a = args as Record<string, unknown>;
 
   if (name === 'slow_operation') {
     const raw = Number(a['duration_ms']);
     const duration = Math.min(isNaN(raw) ? 1000 : raw, 5000);
+    const controller = new AbortController();
+    runningOperations.set(extra.requestId, controller);
     console.error(`[server] Phase 3 — slow_operation starting (${duration} ms)`);
-    await new Promise<void>((resolve) => setTimeout(resolve, duration));
-    console.error(`[server] Phase 3 — slow_operation complete`);
-    return {
-      content: [{ type: 'text' as const, text: `Slept for ${duration} ms.` }],
-    };
+    try {
+      await sleepWithAbort(duration, controller.signal);
+      console.error(`[server] Phase 3 — slow_operation complete`);
+      return {
+        content: [{ type: 'text' as const, text: `Slept for ${duration} ms.` }],
+      };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error(`[server] Phase 3 — slow_operation aborted`);
+      return {
+        content: [{ type: 'text' as const, text: message }],
+        isError: true as const,
+      };
+    } finally {
+      runningOperations.delete(extra.requestId);
+    }
   }
 
   return {
@@ -169,15 +200,23 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 //   params.reason    — optional human-readable reason
 //
 // The server should stop work for that requestId as soon as possible.
-// In this demo we just log it; in production you would look up a running
-// handler by requestId and call abort() on its AbortController.
+// In this demo we really do that by aborting the matching AbortController.
 
 server.setNotificationHandler(CancelledNotificationSchema, async (notification) => {
   const { requestId, reason } = notification.params;
   console.error(`[server] Phase 5 — cancellation received`);
   console.error(`[server]   requestId: ${requestId}`);
   console.error(`[server]   reason:    ${reason ?? '(none)'}`);
-  console.error(`[server]   In production: look up handler by requestId and abort it.`);
+  const controller =
+    typeof requestId === 'string' || typeof requestId === 'number'
+      ? runningOperations.get(requestId)
+      : undefined;
+  if (controller) {
+    controller.abort();
+    console.error(`[server]   Matching operation aborted.`);
+  } else {
+    console.error(`[server]   No active operation matched that requestId.`);
+  }
 });
 
 // ─── Phase 6: transport + connect ────────────────────────────────────────────

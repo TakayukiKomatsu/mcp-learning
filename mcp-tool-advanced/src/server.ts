@@ -185,19 +185,29 @@ server.registerTool(
 //                          external URL; clients should surface this to users so
 //                          they understand data is leaving the local environment
 //   readOnlyHint: true   — only fetches (reads) data; does not write anything
-//
-// In this demo the fetch is simulated, but the annotations are correct for a
-// real implementation that actually calls an external HTTP endpoint.
 server.registerTool(
   "fetch_external",
   {
-    description: "Simulate fetching data from an external API (open world — interacts outside the server).",
+    description: "Fetch data from an external HTTP endpoint (open world — interacts outside the server).",
     inputSchema: z.object({ url: z.string().url() }),
     annotations: { openWorldHint: true, readOnlyHint: true },
   },
-  async ({ url }) => ({
-    content: [{ type: "text" as const, text: `[Simulated] Fetched from ${url}: { "status": "ok", "data": "mock response" }` }],
-  })
+  async ({ url }) => {
+    const response = await fetch(url, {
+      headers: { accept: "application/json, text/plain;q=0.9, */*;q=0.1" },
+    });
+    const body = await response.text();
+    const preview = body.length > 180 ? `${body.slice(0, 180)}…` : body;
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: `Fetched ${url}\nStatus: ${response.status} ${response.statusText}\nPreview: ${preview}`,
+        },
+      ],
+    };
+  }
 );
 
 // ─── Transport & Connection ───────────────────────────────────────────────────

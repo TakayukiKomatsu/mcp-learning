@@ -188,21 +188,22 @@ app.post('/mcp', authMiddleware, async (req, res) => {
       transport = new StreamableHTTPServerTransport({
         sessionIdGenerator: () => randomUUID(),
         onsessioninitialized: (newSessionId) => {
+          activeSessionId = newSessionId;
           transports.set(newSessionId, transport!);
           getOrCreateSessionNotes(newSessionId);
           console.log(`Created session ${newSessionId}`);
         },
       });
 
+      let activeSessionId: string | undefined;
       transport.onclose = () => {
-        const closedSessionId = transport?.sessionId;
-        if (!closedSessionId) {
+        if (!activeSessionId) {
           return;
         }
 
-        transports.delete(closedSessionId);
-        notesBySession.delete(closedSessionId);
-        console.log(`Closed session ${closedSessionId}`);
+        transports.delete(activeSessionId);
+        notesBySession.delete(activeSessionId);
+        console.log(`Closed session ${activeSessionId}`);
       };
 
       const server = createServer();

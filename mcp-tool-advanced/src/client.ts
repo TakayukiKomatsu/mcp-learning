@@ -160,8 +160,8 @@ async function main() {
   printSectionHeader("fetch_external  [openWorld — contacts external systems]");
   console.log("  NOTE: This tool has openWorldHint=true.");
   console.log("  It will contact an external URL outside this server.");
-  console.log("  Proceeding with fetch_external({ url: 'https://api.example.com/data' })...\n");
-  const fetchResult = await client.callTool({ name: "fetch_external", arguments: { url: "https://api.example.com/data" } });
+  console.log("  Proceeding with fetch_external({ url: 'https://jsonplaceholder.typicode.com/todos/1' })...\n");
+  const fetchResult = await client.callTool({ name: "fetch_external", arguments: { url: "https://jsonplaceholder.typicode.com/todos/1" } });
   if (Array.isArray(fetchResult.content) && fetchResult.content[0] && "text" in fetchResult.content[0]) {
     console.log("  Result:", fetchResult.content[0].text);
   }
