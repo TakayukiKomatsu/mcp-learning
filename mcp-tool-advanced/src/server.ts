@@ -11,7 +11,17 @@
  * the user for confirmation, show a warning, or call the tool automatically
  * without interrupting the user.
  *
- * THE FOUR ANNOTATION TYPES:
+ * ANNOTATION FIELDS:
+ *
+ *   title: string
+ *     A short, human-readable display name for the tool. Used by UIs to show
+ *     a friendly label instead of the snake_case name (e.g. "Read File" instead
+ *     of "read_file"). Has no trust or behavioral implications — it is purely
+ *     cosmetic. A client that ignores `title` loses nothing functionally.
+ *     It was kept separate from the hint fields deliberately: hints describe
+ *     behavior (safe to retry, may destroy data, reaches outside). Title is
+ *     just a label. Mixing display metadata with safety metadata would muddy
+ *     the semantics.
  *
  *   readOnlyHint: true
  *     The tool does not modify any state. It is always safe to call without
@@ -80,7 +90,7 @@ server.registerTool(
   {
     description: "List all files in the in-memory file system and return resource links for each one.",
     inputSchema: z.object({}),
-    annotations: { readOnlyHint: true, idempotentHint: true },
+    annotations: { title: "List Files", readOnlyHint: true, idempotentHint: true },
   },
   async () => ({
     content: [
@@ -117,7 +127,7 @@ server.registerTool(
   {
     description: "Read a file and return its metadata and content as structured JSON.",
     inputSchema: z.object({ filename: z.string() }),
-    annotations: { readOnlyHint: true, idempotentHint: true },
+    annotations: { title: "Read File", readOnlyHint: true, idempotentHint: true },
     outputSchema: z.object({
       filename: z.string(),
       content: z.string(),
@@ -150,7 +160,7 @@ server.registerTool(
   {
     description: "Write content to a file. Creates if not exists, overwrites if exists.",
     inputSchema: z.object({ filename: z.string(), content: z.string() }),
-    annotations: { destructiveHint: true, idempotentHint: false },
+    annotations: { title: "Write File", destructiveHint: true, idempotentHint: false },
   },
   async ({ filename, content }) => {
     fileSystem.set(filename, { content, size: content.length, createdAt: new Date().toISOString() });
@@ -169,7 +179,7 @@ server.registerTool(
   {
     description: "Permanently delete a file. This cannot be undone.",
     inputSchema: z.object({ filename: z.string() }),
-    annotations: { destructiveHint: true, idempotentHint: false },
+    annotations: { title: "Delete File", destructiveHint: true, idempotentHint: false },
   },
   async ({ filename }) => {
     if (!fileSystem.has(filename)) throw new Error(`File not found: ${filename}`);
@@ -190,7 +200,7 @@ server.registerTool(
   {
     description: "Fetch data from an external HTTP endpoint (open world — interacts outside the server).",
     inputSchema: z.object({ url: z.string().url() }),
-    annotations: { openWorldHint: true, readOnlyHint: true },
+    annotations: { title: "Fetch External URL", openWorldHint: true, readOnlyHint: true },
   },
   async ({ url }) => {
     const response = await fetch(url, {

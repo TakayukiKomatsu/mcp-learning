@@ -102,7 +102,28 @@ This is where MCP becomes a platform rather than just a wire protocol:
 - `Registry` discovery
 - `Bundle` packaging and distribution
 - stronger auth patterns such as DPoP-style proof-of-possession
+- formal extensions framework (SEP-2133): `extensions` capability negotiation, vendor-prefixed identifiers, graceful degradation
+- OAuth Client Credentials extension for machine-to-machine auth
+- Enterprise-Managed Authorization extension for SSO/IdP environments
 - transport and session experiments such as long-lived SSE variants
+
+### Active Working Groups (not yet in spec)
+
+These are active MCP Working Groups as of 2026. They are developing ideas that
+may become extensions or spec additions in the future. They are not yet
+demonstrated in this repo because they have no finalized spec yet.
+
+- `Triggers and Events`
+  Event-driven MCP: servers push notifications or trigger client workflows based
+  on external events, rather than only responding to client requests.
+
+- `Skills Over MCP`
+  Standardized skill/instruction sets exposed via MCP, allowing agents to
+  discover and consume portable, structured guidance from servers.
+
+- `Inspector V2`
+  Next-generation tooling for testing, inspecting, and debugging MCP servers
+  interactively.
 
 ## Status Labels
 
@@ -153,8 +174,10 @@ Typical examples in this repo:
 - `mcp-stateful-http`
 - `mcp-auth`
 - `mcp-oauth-browser`
+- `mcp-oauth-discovery`
 - `mcp-server-cards`
 - `mcp-tasks`
+- `mcp-tasks-lifecycle`
 
 ### Same-process demos
 
@@ -171,6 +194,7 @@ Typical examples in this repo:
 - `mcp-inmemory-demo`
 - `mcp-inmemory-notes`
 - `mcp-custom-transport`
+- `mcp-extensions-demo`
 
 ### Ecosystem / tooling demos
 
@@ -209,6 +233,7 @@ Best examples here:
 
 - `mcp-http-todo`
 - `mcp-auth`
+- `mcp-oauth-client-credentials`
 
 Use stateful `Streamable HTTP` when:
 
@@ -280,14 +305,18 @@ Best example here:
 ### Async workflows
 
 - `mcp-tasks`
+- `mcp-tasks-lifecycle`
 
 ### Auth, discovery, distribution, UI
 
 - `mcp-auth`
 - `mcp-oauth-browser`
+- `mcp-oauth-client-credentials`
+- `mcp-oauth-discovery`
 - `mcp-dpop-demo`
 - `mcp-server-cards`
 - `mcp-apps`
+- `mcp-extensions-demo`
 - `mcp-registry-demo`
 - `mcp-bundle-demo`
 
@@ -302,6 +331,7 @@ Best example here:
 | `mcp-custom-transport` | hand-rolled transport | same-process custom transport | no | no | verified | learning that MCP is transport-agnostic |
 | `mcp-dpop-demo` | DPoP-style proof extension | Streamable HTTP | yes | yes | educational approximation | proof-of-possession ideas layered on auth |
 | `mcp-elicitation` | structured user input mid-call | stdio | no | no | verified | server asks the user for non-sensitive structured input |
+| `mcp-extensions-demo` | MCP extensions capability negotiation | same-process | no | no | verified | demonstrating how extension identifiers are negotiated in initialize |
 | `mcp-http-todo` | stateless Streamable HTTP | Streamable HTTP | yes | yes | verified | default remote MCP service shape |
 | `mcp-inmemory-demo` | `InMemoryTransport` | same-process | no | no | verified | tests, same-process learning, no infrastructure |
 | `mcp-inmemory-notes` | second `InMemoryTransport` example | same-process | no | no | verified | alternate in-memory example |
@@ -312,6 +342,8 @@ Best example here:
 | `mcp-lowlevel-server` | raw `Server` API | stdio | no | no | verified | understanding MCP below `McpServer` |
 | `mcp-multi-turn-sse` | sessionful SSE turns | SSE | yes | limited | educational approximation | learning long-lived SSE session behavior |
 | `mcp-oauth-browser` | browser-style auth-code flow | Streamable HTTP | yes | yes | verified | redirect/code/token exchange around MCP |
+| `mcp-oauth-client-credentials` | OAuth 2.0 Client Credentials (M2M auth) | Streamable HTTP | yes | yes | verified | service-to-service auth with no human user involved |
+| `mcp-oauth-discovery` | OAuth discovery chain | Streamable HTTP | yes | yes | verified | learning `oauth-protected-resource` -> `oauth-authorization-server` -> `token_endpoint` discovery |
 | `mcp-pagination` | paginated resource listing | stdio | no | no | verified | list endpoints with cursors |
 | `mcp-progress` | progress notifications | stdio | no | no | verified | long-running tools that report progress |
 | `mcp-registry-demo` | registry discovery | ecosystem script | no | n/a | verified | finding public servers in the MCP registry |
@@ -328,6 +360,7 @@ Best example here:
 | `mcp-stateful-http` | stateful Streamable HTTP | Streamable HTTP | yes | yes | verified | session-oriented remote MCP |
 | `mcp-stdio-math` | canonical stdio demo | stdio | no | no | verified | the starting point for local subprocess MCP |
 | `mcp-tasks` | async task execution | Streamable HTTP | yes | yes | verified | long-running workflows with task polling/status |
+| `mcp-tasks-lifecycle` | isolated task lifecycle states | Streamable HTTP | yes | yes | verified | teaching completed / failed / expired task outcomes cleanly |
 | `mcp-tool-advanced` | annotations, structured output, resource links | stdio | no | no | verified | richer tool metadata and machine-readable results |
 
 ## Recommended Learning Path
@@ -347,14 +380,18 @@ If you want the cleanest progression through MCP as a learner, use this order:
 11. `mcp-elicitation`
 12. `mcp-stateful-http`
 13. `mcp-auth`
-14. `mcp-tool-advanced`
-15. `mcp-resource-templates`
-16. `mcp-list-changed`
-17. `mcp-tasks`
-18. `mcp-server-cards`
-19. `mcp-apps`
-20. `mcp-registry-demo`
-21. `mcp-bundle-demo`
+14. `mcp-oauth-client-credentials`
+15. `mcp-oauth-discovery`
+16. `mcp-tool-advanced`
+17. `mcp-resource-templates`
+18. `mcp-list-changed`
+19. `mcp-tasks`
+20. `mcp-tasks-lifecycle`
+21. `mcp-server-cards`
+22. `mcp-apps`
+23. `mcp-extensions-demo`
+24. `mcp-registry-demo`
+25. `mcp-bundle-demo`
 
 Use the “notes” variants as secondary examples, not as the primary path.
 
@@ -447,6 +484,12 @@ Use this repo together with the official references:
   [blog.modelcontextprotocol.io/posts/2025-11-20-adopting-mcpb](https://blog.modelcontextprotocol.io/posts/2025-11-20-adopting-mcpb/)
 - Server Instructions:
   [blog.modelcontextprotocol.io/posts/2025-11-03-using-server-instructions](https://blog.modelcontextprotocol.io/posts/2025-11-03-using-server-instructions/)
+- Tool Annotations as Risk Vocabulary:
+  [blog.modelcontextprotocol.io/posts/2026-03-16-tool-annotations](https://blog.modelcontextprotocol.io/posts/2026-03-16-tool-annotations/)
+- Understanding MCP Extensions:
+  [blog.modelcontextprotocol.io/posts/2026-03-11-understanding-mcp-extensions](https://blog.modelcontextprotocol.io/posts/2026-03-11-understanding-mcp-extensions/)
+- Expanding the MCP Maintainer Team:
+  [blog.modelcontextprotocol.io/posts/2026-04-08-maintainer-update](https://blog.modelcontextprotocol.io/posts/2026-04-08-maintainer-update/)
 
 ## Bottom Line
 
