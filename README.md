@@ -12,6 +12,13 @@ to answer four practical questions:
 4. Which parts are stable, and which parts are intentionally simplified for
    education?
 
+It also now exposes the curriculum in two explicit tracks:
+
+- Core path:
+  [curriculum/core-demos.md](/Users/takayuki/dev/SIDEPROJECTS/mcp-learning/curriculum/core-demos.md)
+- Extra examples:
+  [curriculum/extra-examples.md](/Users/takayuki/dev/SIDEPROJECTS/mcp-learning/curriculum/extra-examples.md)
+
 All `mcp-*` directories in this repository currently typecheck. The projects
 marked `verified` below were also smoke-tested end-to-end in this repo. The
 projects marked `educational approximation` are still useful learning demos, but
@@ -469,6 +476,23 @@ Those approximations are acceptable for learning. They exist to teach the
 concepts without pretending that every evolving or enterprise pattern is fully
 standardized and production-complete in this repo.
 
+## Core vs Extra Examples
+
+The repo has a few deliberate duplicates or near-duplicates. They are not
+accidents; they serve two different purposes:
+
+- `core demos`
+  The first-class path for learning the concept cleanly.
+- `extra examples`
+  Smaller alternates, combined demos, or compatibility-oriented variants.
+
+Use these files to navigate that structure:
+
+- Core path:
+  [curriculum/core-demos.md](/Users/takayuki/dev/SIDEPROJECTS/mcp-learning/curriculum/core-demos.md)
+- Extra examples:
+  [curriculum/extra-examples.md](/Users/takayuki/dev/SIDEPROJECTS/mcp-learning/curriculum/extra-examples.md)
+
 ## How to Run the Repo
 
 There are three common ways to run the demos.
@@ -509,6 +533,17 @@ These are not normal client/server pairs:
 
 - `mcp-registry-demo` uses `npm run start`
 - `mcp-bundle-demo` uses `npm run inspect`
+
+### D. Full repo smoke test
+
+To validate the whole curriculum in one pass, run:
+
+```bash
+./scripts/smoke-test-all.sh
+```
+
+That script typechecks every demo, runs all self-contained demos directly, and
+starts/stops the HTTP, SSE, and WebSocket server/client pairs automatically.
 
 ## When Not to Use MCP
 
