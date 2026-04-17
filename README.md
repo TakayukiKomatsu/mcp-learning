@@ -195,6 +195,7 @@ Typical examples in this repo:
 - `mcp-inmemory-demo`
 - `mcp-inmemory-notes`
 - `mcp-custom-transport`
+- `mcp-websocket-custom`
 - `mcp-extensions-demo`
 
 ### Ecosystem / tooling demos
@@ -273,6 +274,16 @@ Best example here:
 
 - `mcp-custom-transport`
 
+### Non-standard WebSocket transport
+
+Use this only when you control both ends and intentionally want a persistent
+WebSocket channel. It is useful for learning or private deployments, but it is
+not one of the standard MCP transports.
+
+Best example here:
+
+- `mcp-websocket-custom`
+
 ## Feature Families
 
 ### Tools and execution
@@ -283,6 +294,7 @@ Best example here:
 - `mcp-list-changed`
 - `mcp-pagination`
 - `mcp-retry-jitter`
+- `mcp-websocket-custom`
 
 ### Readable data and reusable templates
 
@@ -367,6 +379,45 @@ Best example here:
 | `mcp-tasks` | async task execution | Streamable HTTP | yes | yes | verified | long-running workflows with task polling/status |
 | `mcp-tasks-lifecycle` | isolated task lifecycle states | Streamable HTTP | yes | yes | verified | teaching completed / failed / expired task outcomes cleanly |
 | `mcp-tool-advanced` | annotations, structured output, resource links | stdio | no | no | verified | richer tool metadata and machine-readable results |
+| `mcp-websocket-custom` | non-standard websocket transport | custom websocket | yes | limited | verified | when you control both endpoints and explicitly want a persistent websocket channel |
+
+## Choose by Use Case
+
+Use these tables when the repo feels too broad and you need the shortest path
+to the right demo.
+
+### Which transport should I choose?
+
+| Situation | Prefer | Why | Best demos |
+| --- | --- | --- | --- |
+| local host launches local MCP subprocess | `stdio` | lowest operational overhead, no network | `mcp-stdio-math`, `mcp-lowlevel-server` |
+| remote service behind normal HTTP infrastructure | stateless `Streamable HTTP` | one endpoint, easy deployment and scaling | `mcp-http-todo`, `mcp-auth`, `mcp-oauth-client-credentials` |
+| remote service with per-session state | stateful `Streamable HTTP` | explicit session handling with `Mcp-Session-Id` | `mcp-stateful-http`, `mcp-stateful-auth-notes` |
+| learning the older HTTP pattern | `SSE` | useful historical/background understanding | `mcp-sse-weather` |
+| same-process tests or demos | `InMemoryTransport` | no server process or sockets needed | `mcp-inmemory-demo` |
+| custom non-standard persistent socket | custom transport / websocket | only when you control both client and server | `mcp-custom-transport`, `mcp-websocket-custom` |
+
+### Which auth pattern should I choose?
+
+| Situation | Prefer | Why | Best demos |
+| --- | --- | --- | --- |
+| simple protected MCP endpoint | bearer auth | smallest useful protected setup | `mcp-auth` |
+| user signs in via browser | auth-code flow | delegated user access with redirect/code exchange | `mcp-oauth-browser` |
+| backend service authenticates itself | client credentials | no browser, no user, machine-to-machine | `mcp-oauth-client-credentials` |
+| understanding discovery chain itself | OAuth discovery chain | isolates resource metadata -> AS metadata -> token endpoint | `mcp-oauth-discovery` |
+| enterprise SSO / gateway-enforced policy | enterprise-managed auth | authorization comes from upstream enterprise context | `mcp-enterprise-managed-auth` |
+| proof-of-possession concepts | DPoP-style pattern | teaches a stronger-than-bearer direction, still simplified here | `mcp-dpop-demo` |
+
+### Which async / failure pattern should I choose?
+
+| Situation | Prefer | Why | Best demos |
+| --- | --- | --- | --- |
+| one call with progress updates | progress notifications | keep a single request alive while showing work | `mcp-progress` |
+| long-running async work with task ids | tasks API | explicit lifecycle rather than one blocking response | `mcp-tasks` |
+| understand completed/failed/expired task outcomes | isolated task lifecycle demo | narrower focus than the full tasks demo | `mcp-tasks-lifecycle` |
+| classify transient vs permanent failures and apply jitter | retry/jitter demo | teaches retry policy outside the tasks API too | `mcp-retry-jitter` |
+| server asks model to generate | sampling | generation remains client/model-owned | `mcp-sampling`, `mcp-sampling-tools` |
+| server asks user for structured input | elicitation | user input is part of the workflow | `mcp-elicitation` |
 
 ## Recommended Learning Path
 
