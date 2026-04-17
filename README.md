@@ -173,6 +173,7 @@ Typical examples in this repo:
 - `mcp-http-todo`
 - `mcp-stateful-http`
 - `mcp-auth`
+- `mcp-enterprise-managed-auth`
 - `mcp-oauth-browser`
 - `mcp-oauth-discovery`
 - `mcp-server-cards`
@@ -281,6 +282,7 @@ Best example here:
 - `mcp-tool-advanced`
 - `mcp-list-changed`
 - `mcp-pagination`
+- `mcp-retry-jitter`
 
 ### Readable data and reusable templates
 
@@ -310,6 +312,7 @@ Best example here:
 ### Auth, discovery, distribution, UI
 
 - `mcp-auth`
+- `mcp-enterprise-managed-auth`
 - `mcp-oauth-browser`
 - `mcp-oauth-client-credentials`
 - `mcp-oauth-discovery`
@@ -331,6 +334,7 @@ Best example here:
 | `mcp-custom-transport` | hand-rolled transport | same-process custom transport | no | no | verified | learning that MCP is transport-agnostic |
 | `mcp-dpop-demo` | DPoP-style proof extension | Streamable HTTP | yes | yes | educational approximation | proof-of-possession ideas layered on auth |
 | `mcp-elicitation` | structured user input mid-call | stdio | no | no | verified | server asks the user for non-sensitive structured input |
+| `mcp-enterprise-managed-auth` | enterprise-managed authorization | Streamable HTTP | yes | yes | verified | learning gateway/IdP-managed policy enforcement without interactive auth on the MCP server |
 | `mcp-extensions-demo` | MCP extensions capability negotiation | same-process | no | no | verified | demonstrating how extension identifiers are negotiated in initialize |
 | `mcp-http-todo` | stateless Streamable HTTP | Streamable HTTP | yes | yes | verified | default remote MCP service shape |
 | `mcp-inmemory-demo` | `InMemoryTransport` | same-process | no | no | verified | tests, same-process learning, no infrastructure |
@@ -347,6 +351,7 @@ Best example here:
 | `mcp-pagination` | paginated resource listing | stdio | no | no | verified | list endpoints with cursors |
 | `mcp-progress` | progress notifications | stdio | no | no | verified | long-running tools that report progress |
 | `mcp-registry-demo` | registry discovery | ecosystem script | no | n/a | verified | finding public servers in the MCP registry |
+| `mcp-retry-jitter` | retry, jitter, and failure classification | stdio | no | no | verified | teaching client-side retry policy for transient vs permanent failures |
 | `mcp-resource-templates` | templated resources + subscriptions | stdio | no | no | verified | dynamic URI families and per-resource updates |
 | `mcp-resources-prompts` | resources + prompts | stdio | no | no | verified | exposing data and reusable prompt templates |
 | `mcp-resources-prompts-notes` | smaller resources/prompts example | stdio | no | no | verified | lighter alternate example |
@@ -380,18 +385,20 @@ If you want the cleanest progression through MCP as a learner, use this order:
 11. `mcp-elicitation`
 12. `mcp-stateful-http`
 13. `mcp-auth`
-14. `mcp-oauth-client-credentials`
-15. `mcp-oauth-discovery`
-16. `mcp-tool-advanced`
-17. `mcp-resource-templates`
-18. `mcp-list-changed`
-19. `mcp-tasks`
-20. `mcp-tasks-lifecycle`
-21. `mcp-server-cards`
-22. `mcp-apps`
-23. `mcp-extensions-demo`
-24. `mcp-registry-demo`
-25. `mcp-bundle-demo`
+14. `mcp-enterprise-managed-auth`
+15. `mcp-oauth-client-credentials`
+16. `mcp-oauth-discovery`
+17. `mcp-tool-advanced`
+18. `mcp-retry-jitter`
+19. `mcp-resource-templates`
+20. `mcp-list-changed`
+21. `mcp-tasks`
+22. `mcp-tasks-lifecycle`
+23. `mcp-server-cards`
+24. `mcp-apps`
+25. `mcp-extensions-demo`
+26. `mcp-registry-demo`
+27. `mcp-bundle-demo`
 
 Use the “notes” variants as secondary examples, not as the primary path.
 

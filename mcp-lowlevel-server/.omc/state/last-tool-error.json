@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd /Users/takayuki/dev/SIDEPROJECTS/mcp-learning/mcp-resources-prompts && rtk tsc --noEmit 2>&1\",\"description\":\"Type-check both files\"}",
-  "error": "Exit code 2\nTypeScript: 9 errors in 2 files\n═══════════════════════════════════════\nTop codes: TS2339 (6x), TS2769 (3x)\n\nsrc/server.ts (7 errors)\n  L126: TS2769 No overload matches this call.\n    Overload 1 of 4, '(name: string, description: string, cb: (extra: RequestHandlerExtra<ServerRequest, ServerNotificati...\n    Argument of type '{ description: string; arguments: { name: string; description: string; required: boolean; }[]; }' i...\n  L130: TS2339 Property 'note_id' does not exist on type '...",
-  "timestamp": "2026-04-14T15:31:15.236Z",
-  "retry_count": 2
-}
