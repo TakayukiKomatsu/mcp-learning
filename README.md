@@ -19,6 +19,19 @@ It also now exposes the curriculum in two explicit tracks:
 - Extra examples:
   [curriculum/extra-examples.md](/Users/takayuki/dev/SIDEPROJECTS/mcp-learning/curriculum/extra-examples.md)
 
+And it now has a dedicated study/reference layer:
+
+- Glossary:
+  [docs/glossary.md](/Users/takayuki/dev/SIDEPROJECTS/mcp-learning/docs/glossary.md)
+- Protocol flows:
+  [docs/protocol-flows.md](/Users/takayuki/dev/SIDEPROJECTS/mcp-learning/docs/protocol-flows.md)
+- Design decision tree:
+  [docs/decision-tree.md](/Users/takayuki/dev/SIDEPROJECTS/mcp-learning/docs/decision-tree.md)
+- Anti-patterns:
+  [docs/anti-patterns.md](/Users/takayuki/dev/SIDEPROJECTS/mcp-learning/docs/anti-patterns.md)
+- MCP vs REST:
+  [docs/rest-comparison.md](/Users/takayuki/dev/SIDEPROJECTS/mcp-learning/docs/rest-comparison.md)
+
 All `mcp-*` directories in this repository currently typecheck. The projects
 marked `verified` below were also smoke-tested end-to-end in this repo. The
 projects marked `educational approximation` are still useful learning demos, but
