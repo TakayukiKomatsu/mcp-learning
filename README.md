@@ -31,6 +31,14 @@ And it now has a dedicated study/reference layer:
   [docs/anti-patterns.md](/Users/takayuki/dev/SIDEPROJECTS/mcp-learning/docs/anti-patterns.md)
 - MCP vs REST:
   [docs/rest-comparison.md](/Users/takayuki/dev/SIDEPROJECTS/mcp-learning/docs/rest-comparison.md)
+- Troubleshooting:
+  [docs/troubleshooting.md](/Users/takayuki/dev/SIDEPROJECTS/mcp-learning/docs/troubleshooting.md)
+- Production checklist:
+  [docs/production-checklist.md](/Users/takayuki/dev/SIDEPROJECTS/mcp-learning/docs/production-checklist.md)
+- Spec vs ecosystem:
+  [docs/spec-vs-ecosystem.md](/Users/takayuki/dev/SIDEPROJECTS/mcp-learning/docs/spec-vs-ecosystem.md)
+- Language selection:
+  [docs/language-selection.md](/Users/takayuki/dev/SIDEPROJECTS/mcp-learning/docs/language-selection.md)
 
 All `mcp-*` directories in this repository currently typecheck. The projects
 marked `verified` below were also smoke-tested end-to-end in this repo. The
